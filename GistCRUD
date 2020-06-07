@@ -1,0 +1,29 @@
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+
+class Start():
+    def setupFirefox(self,url):
+        self.driver = webdriver.Firefox(executable_path="..\driver\geckodriver.exe")
+        self.driver.get(str(url))
+        self.driver.maximize_window()
+
+create = Start()
+create.setupFirefox("https://gist.github.com/")
+create.driver.find_element(By.LINK_TEXT, "Sign in").click()
+create.driver.find_element(By.ID, "login_field").send_keys("febrinariani@gmail.com")
+create.driver.find_element(By.ID, "password").send_keys("Satu2tiga$")
+create.driver.find_element(By.NAME, "commit").click()
+create.driver.get("https://gist.github.com/")
+create.driver.find_element(By.NAME, "gist[contents][][name]").send_keys("NewGist")
+create.driver.find_element(By.CSS_SELECTOR, ".CodeMirror-code").send_keys("Hi, this is my New Gist")
+create.driver.find_element(By.NAME, "gist[public]").click()
+create.driver.find_element(By.LINK_TEXT, "Edit").click()
+create.driver.find_element(By.NAME, "gist[contents][][name]").send_keys("EditedGist")
+create.driver.find_element(By.CSS_SELECTOR, ".file-editor-textarea").send_keys("Hi, this is my Edited Gist")
+create.driver.find_element(By.CSS_SELECTOR, ".Header-link > .avatar").click()
+create.driver.find_element(By.LINK_TEXT, "Your gists").click()
+create.driver.find_element(By.CSS_SELECTOR, ".gist-snippet:nth-child(2) .css-truncate-target").click()
+create.driver.find_element(By.CSS_SELECTOR, ".btn-danger").click()
+assert create.driver.switch_to.alert.text == "Are you positive you want to delete this Gist?"
+create.driver.switch_to.alert.accept()
+self.driver.close()
